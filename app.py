@@ -3,7 +3,10 @@ import streamlit as st
 import pandas as pd
 import joblib
 import time
-
+import streamlit as st
+st.write("Test App")
+if st.button("Click Me"):
+    st.write("Button works! ✅")
 # Load model
 model = joblib.load('stress_model.pkl')
 model_columns = joblib.load('model_columns.pkl')
