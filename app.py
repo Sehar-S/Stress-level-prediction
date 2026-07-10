@@ -7,7 +7,7 @@ import time
 model = joblib.load('stress_model.pkl')
 model_columns = joblib.load('model_columns.pkl')
 
-st.set_page_config(page_title="Stress Level Predictor", page_icon="🌙", layout="centered")
+st.set_page_config(page_title="Stress Level Predictor", page_icon="", layout="centered")
 
 # ---------- CUSTOM CSS (Dark Navy Theme) ----------
 st.markdown("""
@@ -149,7 +149,7 @@ hr {
 # ---------- TITLE ----------
 st.markdown("""
 <div class="title-container">
-    <div class="main-title">🌙 Stress Level Predictor</div>
+    <div class="main-title"> Stress Level Predictor</div>
     <div class="subtitle">AI-powered stress assessment based on your lifestyle habits</div>
 </div>
 """, unsafe_allow_html=True)
