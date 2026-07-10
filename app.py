@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import joblib
@@ -8,7 +7,7 @@ import time
 model = joblib.load('stress_model.pkl')
 model_columns = joblib.load('model_columns.pkl')
 
-st.set_page_config(page_title="Stress Level Predictor", page_icon="", layout="centered")
+st.set_page_config(page_title="Stress Level Predictor", page_icon="🌙", layout="centered")
 
 # ---------- CUSTOM CSS (Dark Navy Theme) ----------
 st.markdown("""
@@ -141,7 +140,6 @@ hr {
     border-color: rgba(79, 172, 254, 0.15);
 }
 
-/* Slider color */
 .stSlider [data-baseweb="slider"] > div > div {
     background: linear-gradient(90deg, #4facfe, #00f2fe) !important;
 }
@@ -151,14 +149,14 @@ hr {
 # ---------- TITLE ----------
 st.markdown("""
 <div class="title-container">
-    <div class="main-title"> Stress Level Predictor</div>
+    <div class="main-title">🌙 Stress Level Predictor</div>
     <div class="subtitle">AI-powered stress assessment based on your lifestyle habits</div>
 </div>
 """, unsafe_allow_html=True)
 
 # ---------- INPUT CARD ----------
 st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-st.markdown('<div class="section-label">👤 Personal Details</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-label">Personal Details</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 with col1:
@@ -171,7 +169,7 @@ with col2:
         "Engineer", "Accountant", "Scientist", "Lawyer", "Salesperson", "Manager"
     ])
 
-st.markdown('<div class="section-label" style="margin-top:20px;">😴 Sleep & Activity</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-label" style="margin-top:20px;">Sleep &amp; Activity</div>', unsafe_allow_html=True)
 col3, col4 = st.columns(2)
 with col3:
     sleep_duration = st.slider("Sleep Duration (hours)", 3.0, 10.0, 7.0, step=0.1)
@@ -180,17 +178,17 @@ with col4:
     physical_activity = st.slider("Physical Activity (min/day)", 0, 120, 45)
     daily_steps = st.slider("Daily Steps", 1000, 15000, 6000)
 
-st.markdown('<div class="section-label" style="margin-top:20px;">❤️ Vitals</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-label" style="margin-top:20px;">Vitals</div>', unsafe_allow_html=True)
 heart_rate = st.slider("Heart Rate (bpm)", 50, 120, 70)
 
 st.markdown("<br>", unsafe_allow_html=True)
-predict_btn = st.button("✨ Predict My Stress Level")
+predict_btn = st.button("Predict My Stress Level")
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------- PREDICTION ----------
 if predict_btn:
     with st.spinner("Analyzing your lifestyle..."):
-        time.sleep(0.1)
+        time.sleep(0.8)
 
         input_dict = {
             'Age': age, 'Sleep Duration': sleep_duration, 'Quality of Sleep': quality_of_sleep,
@@ -207,7 +205,32 @@ if predict_btn:
         for col in model_columns:
             if col not in input_df.columns:
                 input_df[col] = 0
+        input_df = input_df[model_columns]
 
-if predict_btn:
-    st.write("Debug: Button clicked, starting prediction...")  
-    with st.spinner("Analyzing your lifestyle..."):
+        prediction = model.predict(input_df)[0]
+        probabilities = model.predict_proba(input_df)[0]
+
+    style_map = {"High": "result-high", "Medium": "result-medium", "Low": "result-low"}
+    icon_map = {"High": "High Risk", "Medium": "Moderate", "Low": "Low Risk"}
+
+    st.markdown(f"""
+    <div class="result-box {style_map[prediction]}">
+        <div class="result-text">Stress Level: {prediction}</div>
+        <div class="result-sub">Based on your current lifestyle pattern</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    prob_df = pd.DataFrame({'Stress Level': model.classes_, 'Probability': probabilities})
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-label">Confidence Breakdown</div>', unsafe_allow_html=True)
+    st.bar_chart(prob_df.set_index('Stress Level'))
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    if prediction == "High":
+        st.error("Tip: Try to get 7-8 hours of sleep, exercise daily, and take regular breaks during work.")
+    elif prediction == "Medium":
+        st.warning("Tip: Bring a bit more balance to your routine — improve both sleep and physical activity.")
+    else:
+        st.success("Great! Keep maintaining your current lifestyle — it's healthy!")
