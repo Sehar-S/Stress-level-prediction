@@ -3,10 +3,7 @@ import streamlit as st
 import pandas as pd
 import joblib
 import time
-import streamlit as st
-st.write("Test App")
-if st.button("Click Me"):
-    st.write("Button works! ✅")
+
 # Load model
 model = joblib.load('stress_model.pkl')
 model_columns = joblib.load('model_columns.pkl')
@@ -210,3 +207,7 @@ if predict_btn:
         for col in model_columns:
             if col not in input_df.columns:
                 input_df[col] = 0
+
+if predict_btn:
+    st.write("Debug: Button clicked, starting prediction...")  
+    with st.spinner("Analyzing your lifestyle..."):
