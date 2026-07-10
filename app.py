@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import joblib
@@ -7,21 +8,21 @@ import time
 model = joblib.load('stress_model.pkl')
 model_columns = joblib.load('model_columns.pkl')
 
-st.set_page_config(page_title="Stress Level Predictor", page_icon="🧘", layout="centered")
+st.set_page_config(page_title="Stress Level Predictor", page_icon="🌙", layout="centered")
 
-# ---------- CUSTOM CSS (Modern + Animated) ----------
+# ---------- CUSTOM CSS (Dark Navy Theme) ----------
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Poppins', sans-serif;
 }
 
 .stApp {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    background: linear-gradient(135deg, #05070f, #0a0e1a, #0d1b2a, #10233a);
     background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+    animation: gradientShift 18s ease infinite;
 }
 
 @keyframes gradientShift {
@@ -32,7 +33,7 @@ html, body, [class*="css"] {
 
 .title-container {
     text-align: center;
-    padding: 20px 0 10px 0;
+    padding: 25px 0 15px 0;
     animation: fadeInDown 1s ease-out;
 }
 
@@ -42,27 +43,28 @@ html, body, [class*="css"] {
 }
 
 .main-title {
-    font-size: 42px;
+    font-size: 40px;
     font-weight: 700;
-    background: linear-gradient(90deg, #7ee8fa, #eec0c6);
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
 }
 
 .subtitle {
-    color: #cfd8dc;
-    font-size: 16px;
-    margin-bottom: 25px;
+    color: #8ba3c7;
+    font-size: 15px;
+    margin-bottom: 10px;
 }
 
 .glass-card {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    border-radius: 20px;
-    padding: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    background: rgba(20, 35, 60, 0.45);
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+    padding: 26px;
+    border: 1px solid rgba(79, 172, 254, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
     margin-bottom: 20px;
     animation: fadeInUp 0.8s ease-out;
 }
@@ -72,49 +74,76 @@ html, body, [class*="css"] {
     to { opacity: 1; transform: translateY(0); }
 }
 
+.section-label {
+    color: #4facfe;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 div.stButton > button {
-    background: linear-gradient(90deg, #7ee8fa, #a1c4fd);
-    color: #0f2027;
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+    color: #05070f;
     font-weight: 700;
     border: none;
     border-radius: 12px;
-    padding: 12px 30px;
+    padding: 13px 30px;
     font-size: 16px;
     width: 100%;
     transition: all 0.3s ease;
+    letter-spacing: 0.3px;
 }
 
 div.stButton > button:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 20px rgba(126, 232, 250, 0.6);
+    transform: scale(1.02);
+    box-shadow: 0 0 25px rgba(79, 172, 254, 0.5);
 }
 
 .result-box {
     text-align: center;
-    padding: 25px;
+    padding: 28px;
     border-radius: 18px;
     animation: popIn 0.5s ease-out;
     margin-top: 15px;
 }
 
 @keyframes popIn {
-    0% { opacity: 0; transform: scale(0.8); }
+    0% { opacity: 0; transform: scale(0.85); }
     100% { opacity: 1; transform: scale(1); }
 }
 
-.result-high { background: rgba(255, 82, 82, 0.15); border: 1px solid #ff5252; }
-.result-medium { background: rgba(255, 193, 7, 0.15); border: 1px solid #ffc107; }
-.result-low { background: rgba(76, 175, 80, 0.15); border: 1px solid #4caf50; }
+.result-high { background: rgba(255, 82, 82, 0.12); border: 1px solid rgba(255, 82, 82, 0.4); }
+.result-medium { background: rgba(255, 193, 7, 0.12); border: 1px solid rgba(255, 193, 7, 0.4); }
+.result-low { background: rgba(56, 239, 125, 0.12); border: 1px solid rgba(56, 239, 125, 0.4); }
 
 .result-text {
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 700;
-    color: white;
+    color: #f0f4fa;
+}
+
+.result-sub {
+    color: #8ba3c7;
+    font-size: 14px;
+    margin-top: 6px;
 }
 
 label, .stSlider label, .stSelectbox label {
-    color: #e0f7fa !important;
-    font-weight: 600 !important;
+    color: #c3d4ec !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+}
+
+hr {
+    border-color: rgba(79, 172, 254, 0.15);
+}
+
+/* Slider color */
+.stSlider [data-baseweb="slider"] > div > div {
+    background: linear-gradient(90deg, #4facfe, #00f2fe) !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -122,31 +151,39 @@ label, .stSlider label, .stSelectbox label {
 # ---------- TITLE ----------
 st.markdown("""
 <div class="title-container">
-    <div class="main-title">🧘 Stress Level Predictor</div>
+    <div class="main-title">🌙 Stress Level Predictor</div>
     <div class="subtitle">AI-powered stress assessment based on your lifestyle habits</div>
 </div>
 """, unsafe_allow_html=True)
 
 # ---------- INPUT CARD ----------
 st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+st.markdown('<div class="section-label">👤 Personal Details</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 with col1:
     age = st.slider("Age", 18, 65, 30)
-    sleep_duration = st.slider("Sleep Duration (hours)", 3.0, 10.0, 7.0, step=0.1)
-    quality_of_sleep = st.slider("Quality of Sleep (1-10)", 1, 10, 6)
-    physical_activity = st.slider("Physical Activity (min/day)", 0, 120, 45)
-with col2:
-    heart_rate = st.slider("Heart Rate (bpm)", 50, 120, 70)
-    daily_steps = st.slider("Daily Steps", 1000, 15000, 6000)
     gender = st.selectbox("Gender", ["Male", "Female"])
     bmi_category = st.selectbox("BMI Category", ["Normal", "Overweight", "Obese"])
+with col2:
+    occupation = st.selectbox("Occupation", [
+        "Software Engineer", "Doctor", "Sales Representative", "Teacher", "Nurse",
+        "Engineer", "Accountant", "Scientist", "Lawyer", "Salesperson", "Manager"
+    ])
 
-occupation = st.selectbox("Occupation", [
-    "Software Engineer", "Doctor", "Sales Representative", "Teacher", "Nurse",
-    "Engineer", "Accountant", "Scientist", "Lawyer", "Salesperson", "Manager"
-])
+st.markdown('<div class="section-label" style="margin-top:20px;">😴 Sleep & Activity</div>', unsafe_allow_html=True)
+col3, col4 = st.columns(2)
+with col3:
+    sleep_duration = st.slider("Sleep Duration (hours)", 3.0, 10.0, 7.0, step=0.1)
+    quality_of_sleep = st.slider("Quality of Sleep (1-10)", 1, 10, 6)
+with col4:
+    physical_activity = st.slider("Physical Activity (min/day)", 0, 120, 45)
+    daily_steps = st.slider("Daily Steps", 1000, 15000, 6000)
 
+st.markdown('<div class="section-label" style="margin-top:20px;">❤️ Vitals</div>', unsafe_allow_html=True)
+heart_rate = st.slider("Heart Rate (bpm)", 50, 120, 70)
+
+st.markdown("<br>", unsafe_allow_html=True)
 predict_btn = st.button("✨ Predict My Stress Level")
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -170,34 +207,3 @@ if predict_btn:
         for col in model_columns:
             if col not in input_df.columns:
                 input_df[col] = 0
-        input_df = input_df[model_columns]
-
-        prediction = model.predict(input_df)[0]
-        probabilities = model.predict_proba(input_df)[0]
-
-    # Result box styling
-    style_map = {"High": "result-high", "Medium": "result-medium", "Low": "result-low"}
-    emoji_map = {"High": "🔴", "Medium": "🟡", "Low": "🟢"}
-
-    st.markdown(f"""
-    <div class="result-box {style_map[prediction]}">
-        <div class="result-text">{emoji_map[prediction]} Stress Level: {prediction}</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # Confidence chart
-    prob_df = pd.DataFrame({'Stress Level': model.classes_, 'Probability': probabilities})
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.write("**Confidence Breakdown**")
-    st.bar_chart(prob_df.set_index('Stress Level'))
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # Tips
-    if prediction == "High":
-        st.error("💡 **Tip:** Try to get 7-8 hours of sleep, exercise daily, and take regular breaks during work.")
-    elif prediction == "Medium":
-        st.warning("💡 **Tip:** Bring a bit more balance to your routine — improve both sleep and physical activity.")
-    else:
-        st.success("💡 **Great!** Keep maintaining your current lifestyle — it's healthy!")
