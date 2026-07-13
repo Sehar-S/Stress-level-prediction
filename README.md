@@ -4,6 +4,8 @@ An AI-powered web application that predicts a person's stress level (Low, Medium
 
 🔗 **Live App:**  https://stress-level-prediction-ltbzozctatdbbxdah3f8fj.streamlit.app/
 
+"Note: This app is hosted on Streamlit Community Cloud's free tier. If the app appears inactive, please click 'Yes, get this app back up!' — it will load within a minute."
+
 ---
 
 ##  What This Project Does
